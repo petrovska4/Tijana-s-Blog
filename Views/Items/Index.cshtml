@@ -1,0 +1,92 @@
+﻿@model TijanasBlog.ViewModels.ItemsViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+
+<form asp-controller="Items" asp-action="Index" method="get">
+    <p>
+        <label for="name">Item Name:</label>
+        <input id="name" name="name" type="text" asp-for="SearchName" class="form-control" />
+        <label for="brand">Brand:</label>
+        <input id="brand" name="brand" type="text" asp-for="SearchBrand" class="form-control" />
+        <label for="type">Type:</label>
+        <input id="type" name="type" type="text" asp-for="SearchType" class="form-control" />
+        <label for="select" class="form-label">Shop:</label>
+        <select class="form-select" name="shop" id="select" asp-for="ItemShop" asp-items="Model.Shops">
+            <option value="">All</option>
+        </select>
+        <input style="margin-top: 5px" type="submit" value="Filter" class="btn btn-outline-info" />
+    </p>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.Items[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Items[0].Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Items[0].Type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Items[0].Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Items[0].Brand)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Items[0].Shops)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Items) {
+        <tr>
+            <td>
+                 <img height="150px" src="@Html.DisplayFor(modelItem => item.Image)" alt="">
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Type)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)€
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Brand.Name)
+            </td>
+            <td>
+                @foreach(var shop in item.Shops)
+                {
+                    <p>
+                        @shop.Shop.Name
+                    </p>
+                }
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
